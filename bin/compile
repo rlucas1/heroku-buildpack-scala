@@ -18,23 +18,9 @@ ENV_DIR=$3
 BUILD_DIR="/tmp/scala_buildpack_build_dir"
 mv $APP_BUILD_DIR $BUILD_DIR
 
-curl --silent --location http://devcctrl.com.packages.s3.amazonaws.com/jvm-buildpack-common-42.tar.gz | tar xz
+curl --silent --location https://github.com/rlucas1/heroku-buildpack-jvm-common/raw/master/jvm-buildpack-common.tar.gz | tar xz
 . bin/util
 . bin/java
-
-#taken from jvm build pack common 
-export_env_dir() {
-  env_dir=$1
-  whitelist_regex=${2:-''}
-  blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH|JAVA_OPTS)$'}
-  if [ -d "$env_dir" ]; then
-    for e in $(ls $env_dir); do
-      echo "$e" | grep -E "$whitelist_regex" | grep -qvE "$blacklist_regex" &&
-      export "$e=$(cat $env_dir/$e)"
-      :
-    done
-  fi
-}
 
 
 export_env_dir $ENV_DIR
