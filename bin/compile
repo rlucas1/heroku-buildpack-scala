@@ -37,7 +37,7 @@ fi
 javaVersion=$(detect_java_version ${BUILD_DIR})
 echo -n "-----> Installing OpenJDK ${javaVersion}..."
 install_java ${BUILD_DIR} ${javaVersion}
-echo -n "WONDELLE"
+
 jdk_overlay ${BUILD_DIR}
 echo "done"
 
@@ -80,7 +80,11 @@ SBT_PROPS_URL="http://s3.amazonaws.com/heroku-jvm-langpack-scala/$SBT_PROPS"
 ## in 0.10 start-script will depend on package, if packaging
 ## is required - it may not be, we can run .class files or a package-war
 ## instead.
-SBT_TASKS="stage"
+
+# To  control which sbt task to run you can set it in SBT_TASKS environment var :
+# $ heroku config:set SBT_TASKS="'project myvariant' stage"
+# $ git push heroku master
+if [ -z "$SBT_TASKS" ]; then SBT_TASKS="stage";
 
 # To enable clean compiles, configure the environment to clean:
 # $ heroku config:set SBT_CLEAN=true
