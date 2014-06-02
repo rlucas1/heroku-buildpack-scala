@@ -84,7 +84,9 @@ SBT_PROPS_URL="http://s3.amazonaws.com/heroku-jvm-langpack-scala/$SBT_PROPS"
 # To  control which sbt task to run you can set it in SBT_TASKS environment var :
 # $ heroku config:set SBT_TASKS="'project myvariant' stage"
 # $ git push heroku master
-if [ -z "$SBT_TASKS" ]; then SBT_TASKS="stage";
+if [ -z "$SBT_TASKS" ]; then 
+	SBT_TASKS="stage";
+fi
 
 # To enable clean compiles, configure the environment to clean:
 # $ heroku config:set SBT_CLEAN=true
