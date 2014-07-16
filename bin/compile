@@ -140,6 +140,10 @@ for DIR in $CACHED_DIRS; do
   cache_copy $DIR $BUILD_DIR $CACHE_DIR
 done
 
+if [ -z "$SBT_TARGET_DIR" ]; then 
+	SBT_TARGET_DIR="target";
+fi
+
 # drop useless directories from slug for play only
 if is_play $BUILD_DIR ; then
   if [ -d $SBT_USER_HOME/.ivy2 ]; then
@@ -150,11 +154,19 @@ if is_play $BUILD_DIR ; then
     echo "-----> Dropping project boot dir from the slug"
     rm -rf $BUILD_DIR/project/boot
   fi
-  if [ -d $BUILD_DIR/target ] ; then
+  if [ -d $BUILD_DIR/$SBT_TARGET_DIR ] ; then
     echo "-----> Dropping compilation artifacts from the slug"
-    rm -rf $BUILD_DIR/target/scala-*
-    rm -rf $BUILD_DIR/target/streams
-    rm -rf $BUILD_DIR/target/resolution-cache
+    rm -rf $BUILD_DIR/$SBT_TARGET_DIR/scala-*
+    rm -rf $BUILD_DIR/$SBT_TARGET_DIR/streams
+    rm -rf $BUILD_DIR/$SBT_TARGET_DIR/resolution-cache
+  fi
+  if [ -d $BUILD_DIR/.jdk/lib/missioncontrol ] ; then
+    echo "-----> Dropping mission control from the slug"
+    rm -rf $BUILD_DIR/.jdk/lib/missioncontrol
+  fi
+  if [ -d $BUILD_DIR/.jdk/lib/visualvm ] ; then
+    echo "-----> Dropping visualvm from the slug"
+    rm -rf $BUILD_DIR/.jdk/lib/visualvm
   fi
 fi
 
